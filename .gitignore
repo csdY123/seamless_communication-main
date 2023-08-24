@@ -141,6 +141,6 @@ multirun
 outputs
 
 
-# symlinks
-seamless_communication
-m4t_scripts
+## symlinks
+#seamless_communication
+#m4t_scripts
