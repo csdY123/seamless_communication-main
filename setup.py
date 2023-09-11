@@ -38,6 +38,7 @@ class cmd_for_editable_mode(develop):
         super().run()
 
 
+
 default_requirements = list(_load_requirements("requirements.txt"))
 dev_requirements = list(_load_requirements("dev_requirements.txt"))
 
