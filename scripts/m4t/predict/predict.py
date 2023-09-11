@@ -8,6 +8,7 @@ import logging
 import torch
 import torchaudio
 from seamless_communication.models.inference import Translator
+import time
 
 logging.basicConfig(
     level=logging.INFO,
@@ -69,6 +70,10 @@ def main():
         logger.info(f"Running inference on the CPU in {dtype}.")
 
     translator = Translator(args.model_name, args.vocoder_name, device, dtype)
+    
+    print("_______________________________________")
+    start_time = time.time()
+
     translated_text, wav, sr = translator.predict(
         args.input,
         args.task,
@@ -76,7 +81,11 @@ def main():
         src_lang=args.src_lang,
         ngram_filtering=args.ngram_filtering,
     )
-
+    end_time = time.time()
+    run_time = end_time - start_time
+    print(f"函数运行时间：{run_time:.6f} 秒")
+    print("_______________________________________")
+    
     if wav is not None and sr is not None:
         logger.info(f"Saving translated audio in {args.tgt_lang}")
         torchaudio.save(
