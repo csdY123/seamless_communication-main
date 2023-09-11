@@ -3,7 +3,6 @@ import torch
 from flask import Flask, request,jsonify
 from utils.config import read_language_config
 from translation_model import call
-import openai
 import logging
 from seamless_communication.models.inference import Translator
 
@@ -27,7 +26,13 @@ def hello_world():
 
 
 @app.route('/translate', methods=['POST'])
-def mess(sentence, sourceLanguage, targetLanguage):  # 我正在使用python写代码，目前有这么一个需求，
+def mess():  # 我正在使用python写代码，目前有这么一个需求，sentence, sourceLanguage, targetLanguage
+    # 从HTTP请求中获取参数
+    sentence = request.json.get('sentence')
+    sourceLanguage = request.json.get('sourceLanguage')
+    targetLanguage = request.json.get('targetLanguage')
+    model = request.json.get('languageModel')
+
     modelResponse=call(sentence, "t2tt", targetLanguage, sourceLanguage,translator)
     return jsonify({
             "model": "seamlessM4T_large",
@@ -47,3 +52,5 @@ if __name__ == '__main__':
 
 # if __name__ == '__main__':
 #     print(read_language_config()['configTest']['cnm'])
+#     mess("你好","cmn","eng")
+#     mess("我是陈森达","cmn","eng")
