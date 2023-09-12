@@ -17,7 +17,7 @@ else:
     dtype = torch.float32
     logger.info(f"Running inference on the CPU in {dtype}.")
 
-translator = Translator("seamlessM4T_large", "vocoder_36langs", device, dtype)
+translator = Translator("seamlessM4T_large", "vocoder_36langs", device, dtype)#seamlessM4T_large seamlessM4T_medium
 
 
 @app.route('/')
@@ -33,7 +33,7 @@ def mess():  # 我正在使用python写代码，目前有这么一个需求，se
     targetLanguage = request.json.get('targetLanguage')
     model = request.json.get('languageModel')
 
-    modelResponse=call(sentence, "t2tt", targetLanguage, sourceLanguage,translator)
+    modelResponse=modelCsd(sentence,sourceLanguage,targetLanguage)
     return jsonify({
             "model": "seamlessM4T_large",
             "vocoder": "vocoder_36langs",
@@ -43,6 +43,8 @@ def mess():  # 我正在使用python写代码，目前有这么一个需求，se
             "modelResponse":modelResponse
         }), 200
 
+def modelCsd(sentence,sourceLanguage,targetLanguage):
+    return call(sentence, "t2tt", targetLanguage, sourceLanguage,translator)
 
 # ./scripts/m4t/predict/predict.py "你好" t2tt en --src_lang zh
 
